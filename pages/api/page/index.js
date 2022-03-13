@@ -1,14 +1,4 @@
-
-const { Client } = require('@notionhq/client');
-require('dotenv').config();
-
-console.log(process.env.NOTION_TOKEN);
-
-const notion = new Client({
-  auth: process.env.NOTION_TOKEN,
-});
-
-const database_id = process.env.NOTION_DATABASE_ID;
+import { notion, database_id } from '../notion';
 
 const getPages = async () => {
   const payload = {
@@ -20,9 +10,9 @@ const getPages = async () => {
     return {
       id: page.id,
       title: page.properties.Name.title[0].text.content,
-      date: page.properties.Date.date.start,
-      description: page.properties.Description.rich_text[0].text.content,
-      tags: page.properties.Tags.multi_select.map(tag => tag.name)
+      date: page.properties.Date.date?.start,
+      description: page.properties.Description.rich_text[0]?.text.content,
+      tags: page.properties.Tags.select?.name
     }
   });
   return pages;
